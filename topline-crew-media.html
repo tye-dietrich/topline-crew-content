@@ -12,15 +12,13 @@
 <style>
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
   body{background:#000;color:#fff;font-family:'Courier New',monospace;min-height:100vh;overflow-x:hidden;}
-  .yellow{color:#FFD000;}
-  .bg-yellow{background:#FFD000;color:#000;}
   .btn{display:flex;align-items:center;justify-content:center;gap:8px;font-family:'Courier New',monospace;font-weight:900;text-transform:uppercase;letter-spacing:2px;border:none;border-radius:12px;cursor:pointer;transition:transform 0.1s;user-select:none;width:100%;}
   .btn:active{transform:scale(0.96);}
   .btn-yellow{background:#FFD000;color:#000;font-size:18px;padding:20px;}
   .btn-gray{background:#1a1a1a;color:#fff;border:2px solid #333;font-size:16px;padding:18px;}
   .btn-gray:hover{border-color:#FFD000;}
   .btn-red{background:#b91c1c;color:#fff;font-size:16px;padding:18px;}
-  .btn-sm{padding:8px 12px;font-size:11px;border-radius:8px;width:auto;}
+  .btn-sm{padding:8px 12px;font-size:11px;border-radius:8px;width:auto;display:inline-flex;align-items:center;justify-content:center;font-family:'Courier New',monospace;font-weight:900;text-transform:uppercase;border:2px solid #333;background:#1a1a1a;color:#aaa;cursor:pointer;}
   .btn:disabled{opacity:0.5;cursor:not-allowed;}
   header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid #1a1a1a;}
   .logo{display:flex;align-items:center;gap:8px;cursor:pointer;}
@@ -28,7 +26,7 @@
   .logo-text{color:#FFD000;font-weight:900;font-size:13px;letter-spacing:3px;text-transform:uppercase;}
   .job-label{font-size:11px;color:#555;max-width:40vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
   main{padding:16px;max-width:480px;margin:0 auto;}
-  .screen{display:none;flex-direction:column;gap:16px;padding-bottom:100px;}
+  .screen{display:none;flex-direction:column;gap:14px;padding-bottom:100px;}
   .screen.active{display:flex;}
   h2{color:#FFD000;font-weight:900;text-transform:uppercase;letter-spacing:3px;font-size:18px;}
   .info-box{background:#111;border:1px solid #222;border-radius:12px;padding:14px;font-size:12px;color:#666;display:flex;flex-wrap:wrap;gap:12px;}
@@ -41,9 +39,9 @@
   .pill-gray{background:#1a1a1a;color:#555;}
   .progress-bar{background:#1a1a1a;border-radius:20px;height:16px;overflow:hidden;}
   .progress-fill{background:#FFD000;height:100%;border-radius:20px;transition:width 0.3s;}
-  .media-card{background:#111;border:1px solid #222;border-radius:16px;padding:12px;display:flex;gap:12px;align-items:flex-start;}
+  .media-card{background:#111;border:1px solid #222;border-radius:16px;padding:12px;display:flex;gap:12px;align-items:flex-start;margin-bottom:10px;}
   .thumb{width:64px;height:64px;border-radius:10px;overflow:hidden;background:#1a1a1a;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:28px;}
-  .thumb img{width:100%;height:100%;object-fit:cover;}
+  .thumb img,.thumb video{width:100%;height:100%;object-fit:cover;}
   .tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px;}
   .tag{padding:2px 8px;border-radius:6px;font-size:10px;font-weight:900;text-transform:uppercase;}
   .tag-white{background:#222;color:#aaa;}
@@ -58,34 +56,31 @@
   .tag-opt{padding:8px 14px;border-radius:10px;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:1px;border:2px solid #333;background:#1a1a1a;color:#aaa;cursor:pointer;transition:all 0.15s;}
   .tag-opt:hover{border-color:#FFD000;}
   .tag-opt.selected{background:#FFD000;color:#000;border-color:#FFD000;}
-  .highlight-toggle{display:flex;align-items:center;gap:12px;cursor:pointer;}
-  .hl-box{width:36px;height:36px;border-radius:10px;border:2px solid #333;background:#1a1a1a;display:flex;align-items:center;justify-content:center;font-size:18px;transition:all 0.15s;}
+  .hl-box{width:36px;height:36px;border-radius:10px;border:2px solid #333;background:#1a1a1a;display:flex;align-items:center;justify-content:center;font-size:18px;transition:all 0.15s;cursor:pointer;}
   .hl-box.on{background:#FFD000;border-color:#FFD000;}
   .log-box{background:#0a0a0a;border:1px solid #222;border-radius:12px;padding:12px;max-height:180px;overflow-y:auto;display:flex;flex-direction:column;gap:4px;}
   .log-line{font-size:11px;font-family:'Courier New',monospace;}
-  .log-ok{color:#555;}
-  .log-err{color:#f87171;}
-  .log-done{color:#FFD000;}
-  .bottom-bar{position:fixed;bottom:0;left:0;right:0;background:#000;border-top:1px solid #1a1a1a;padding:12px 16px;display:flex;gap:12px;max-width:480px;margin:0 auto;}
+  .log-ok{color:#555;}.log-err{color:#f87171;}.log-done{color:#FFD000;}
+  .bottom-bar{position:fixed;bottom:0;left:0;right:0;background:#000;border-top:1px solid #1a1a1a;padding:12px 16px;display:flex;gap:12px;max-width:480px;margin:0 auto;left:50%;transform:translateX(-50%);}
   .badge{position:absolute;top:-6px;right:-6px;background:#FFD000;color:#000;font-size:10px;font-weight:900;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;}
   .relative{position:relative;}
   textarea.input{resize:none;font-size:14px;}
-  .recording{animation:pulse 1s infinite;}
+  .pulse{animation:pulse 1s infinite;}
   @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.5;}}
   .section-title{color:#FFD000;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:3px;}
   .home-hero{text-align:center;padding:20px 0 10px;}
   .home-hero h1{font-size:32px;font-weight:900;color:#FFD000;letter-spacing:2px;}
   .home-hero p{color:#333;font-size:11px;letter-spacing:4px;text-transform:uppercase;margin-top:4px;}
-  .divider{border:none;border-top:1px solid #1a1a1a;margin:4px 0;}
-  .job-card{background:#111;border:1px solid #222;border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:10px;}
-  .job-card-title{font-weight:900;font-size:16px;}
-  .job-card-meta{color:#555;font-size:11px;}
+  .divider{border:none;border-top:1px solid #1a1a1a;}
+  .job-card{background:#111;border:1px solid #222;border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:10px;margin-bottom:12px;}
   .flex-row{display:flex;gap:10px;}
   .flex-1{flex:1;}
-  .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);padding:12px 20px;border-radius:12px;font-size:13px;font-weight:900;z-index:200;white-space:nowrap;transition:opacity 0.3s;}
+  .toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);padding:12px 20px;border-radius:12px;font-size:13px;font-weight:900;z-index:200;white-space:nowrap;}
   .toast-info{background:#222;color:#fff;}
   .toast-success{background:#FFD000;color:#000;}
   .toast-error{background:#b91c1c;color:#fff;}
+  .capture-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .rec-indicator{display:inline-block;width:10px;height:10px;background:#f87171;border-radius:50%;margin-right:6px;animation:pulse 1s infinite;}
 </style>
 </head>
 <body>
@@ -101,10 +96,7 @@
 <main>
   <!-- HOME -->
   <div id="screen-home" class="screen active">
-    <div class="home-hero">
-      <h1>CREW MEDIA</h1>
-      <p>Field Capture Tool</p>
-    </div>
+    <div class="home-hero"><h1>CREW MEDIA</h1><p>Field Capture Tool</p></div>
     <button class="btn btn-yellow" onclick="showScreen('newJob')">🏗️ New Job</button>
     <button class="btn btn-gray" onclick="resumeActiveJob()">▶️ Resume Active Job</button>
     <button class="btn btn-gray relative" onclick="showScreen('paused')" id="pausedBtn">
@@ -126,13 +118,28 @@
   <div id="screen-capture" class="screen">
     <div class="info-box" id="captureInfo"></div>
     <div class="pills" id="progressPills"></div>
-    <input type="file" id="photoInput" accept="image/*" capture="environment" style="display:none" onchange="handlePhotoFile(event)"/>
+
+    <!-- Hidden file inputs -->
+    <input type="file" id="photoInput"     accept="image/*"       capture="environment" style="display:none" onchange="handleFileInput(event,'photo')"/>
+    <input type="file" id="rollPhotoInput" accept="image/*,video/*"                     style="display:none" onchange="handleRollInput(event)"/>
+    <input type="file" id="rollVideoInput" accept="video/*"                             style="display:none" onchange="handleFileInput(event,'video')"/>
+
+    <!-- Camera buttons -->
     <button class="btn btn-yellow" onclick="document.getElementById('photoInput').click()">📷 Take Photo</button>
     <button class="btn btn-gray" id="videoBtn" onclick="toggleVideo()">🎬 Record Video</button>
-    <button class="btn btn-gray" id="voiceBtn" onclick="toggleVoice()">🎙️ Add Voice Note</button>
+    <button class="btn btn-gray" id="voiceBtn" onclick="toggleVoice()">🎙️ Record Voice Note</button>
+
+    <hr class="divider"/>
+    <div class="section-title">📁 Add from Camera Roll</div>
+    <div class="capture-grid">
+      <button class="btn btn-gray" style="font-size:13px;padding:14px" onclick="document.getElementById('rollPhotoInput').click()">🖼️ Photos / Videos</button>
+      <button class="btn btn-gray" style="font-size:13px;padding:14px" onclick="document.getElementById('rollVideoInput').click()">🎞️ Video File</button>
+    </div>
+
     <hr class="divider"/>
     <div class="section-title">Captured Media</div>
-    <div id="mediaList"></div>
+    <div id="mediaList"><p style="color:#333;font-size:12px">No media yet.</p></div>
+
     <div style="height:80px"></div>
     <div class="bottom-bar">
       <button class="btn btn-gray flex-1" onclick="pauseJob()" style="padding:16px">⏸ Pause</button>
@@ -153,8 +160,7 @@
     <div class="info-box" id="uploadInfo"></div>
     <div id="uploadProgress" style="display:none">
       <div style="display:flex;justify-content:space-between;font-size:12px;color:#555;margin-bottom:6px;">
-        <span id="uploadCount">0 / 0</span>
-        <span id="uploadPct">0%</span>
+        <span id="uploadCount">0 / 0</span><span id="uploadPct">0%</span>
       </div>
       <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
     </div>
@@ -168,20 +174,11 @@
 <div class="modal-overlay" id="tagModal">
   <div class="modal">
     <h2 style="font-size:16px">Tag Media</h2>
-    <div>
-      <div class="tag-group-label">Shot Type</div>
-      <div class="tag-options" id="tagShot"></div>
-    </div>
-    <div>
-      <div class="tag-group-label">Service Type</div>
-      <div class="tag-options" id="tagService"></div>
-    </div>
-    <div>
-      <div class="tag-group-label">Content Value</div>
-      <div class="tag-options" id="tagContent"></div>
-    </div>
-    <div class="highlight-toggle" onclick="toggleHL()">
-      <div class="hl-box" id="hlBox">☆</div>
+    <div><div class="tag-group-label">Shot Type</div><div class="tag-options" id="tagShot"></div></div>
+    <div><div class="tag-group-label">Service Type</div><div class="tag-options" id="tagService"></div></div>
+    <div><div class="tag-group-label">Content Value</div><div class="tag-options" id="tagContent"></div></div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div class="hl-box" id="hlBox" onclick="toggleHL()">☆</div>
       <span style="font-weight:900;font-size:14px">⭐ Highlight Clip</span>
     </div>
     <div id="voiceNoteRow" style="display:none">
@@ -208,10 +205,11 @@ db.version(1).stores({
 // ── State ─────────────────────────────────────────────────────────────────────
 let activeJob = null;
 let taggingId = null;
-let tagState  = { shot:'', service:'', content:'', highlight:false, voiceNote:'' };
+let tagState  = {shot:'',service:'',content:'Minimal',highlight:false,voiceNote:''};
 let mediaRec  = null;
 let mediaChunks = [];
-let recordingType = null; // 'video'|'voice'
+let recordingType = null;
+let objectURLs = {}; // cache so we don't re-create blobs
 
 const SHOT_TYPES     = ['Prep','Before','During','After','Finished Lines','Crew','Equipment','New Asphalt'];
 const SERVICE_TYPES  = ['Line Painting','Thermoplastic','MMA','Pothole Repair','Infrared Repair','Crack Sealing','Sealcoating','Warehouse Marking','New Layout','Other'];
@@ -219,36 +217,33 @@ const CONTENT_VALUES = ['Content Worthy','Minimal','Not Content Worthy'];
 
 // ── Toast ─────────────────────────────────────────────────────────────────────
 let toastTimer;
-function showToast(msg, type='info'){
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = `toast toast-${type}`;
-  t.style.display = 'block';
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(()=>t.style.display='none', 3500);
+function showToast(msg,type='info'){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.className=`toast toast-${type}`; t.style.display='block';
+  clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.style.display='none',3500);
 }
 
 // ── Navigation ────────────────────────────────────────────────────────────────
 function showScreen(name){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById('screen-'+name).classList.add('active');
-  if(name==='paused') loadPausedJobs();
+  if(name==='paused')  loadPausedJobs();
   if(name==='capture') renderCapture();
-  if(name==='upload') renderUploadScreen();
+  if(name==='upload')  renderUploadScreen();
 }
 
 function goHome(){
-  activeJob = null;
-  document.getElementById('headerJobLabel').textContent = '';
+  activeJob=null;
+  document.getElementById('headerJobLabel').textContent='';
   showScreen('home');
   updatePausedBadge();
 }
 
 async function updatePausedBadge(){
-  const jobs = await db.jobs.where('status').equals('paused').toArray();
-  const badge = document.getElementById('pausedBadge');
-  badge.textContent = jobs.length;
-  badge.style.display = jobs.length > 0 ? 'flex' : 'none';
+  const jobs=await db.jobs.where('status').equals('paused').toArray();
+  const badge=document.getElementById('pausedBadge');
+  badge.textContent=jobs.length;
+  badge.style.display=jobs.length>0?'flex':'none';
 }
 
 // ── GPS ───────────────────────────────────────────────────────────────────────
@@ -257,232 +252,276 @@ function getGPS(){
     if(!navigator.geolocation) return res('GPS unavailable');
     navigator.geolocation.getCurrentPosition(
       p=>res(`${p.coords.latitude.toFixed(5)}, ${p.coords.longitude.toFixed(5)}`),
-      ()=>res('GPS denied'),
-      {timeout:8000}
-    );
+      ()=>res('GPS denied'),{timeout:8000});
   });
 }
-
 async function getCity(gps){
   try{
-    const [lat,lon] = gps.split(',').map(s=>s.trim());
-    const r = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`);
-    const d = await r.json();
-    return d.address?.city || d.address?.town || d.address?.village || 'Unknown';
-  }catch{ return 'Unknown'; }
+    const [lat,lon]=gps.split(',').map(s=>s.trim());
+    const r=await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`);
+    const d=await r.json();
+    return d.address?.city||d.address?.town||d.address?.village||'Unknown';
+  }catch{return 'Unknown';}
 }
 
 // ── New Job ───────────────────────────────────────────────────────────────────
 async function startJob(){
-  const name = document.getElementById('jobNameInput').value.trim();
+  const name=document.getElementById('jobNameInput').value.trim();
   if(!name) return showToast('Enter a job name','error');
-  const btn = document.getElementById('startJobBtn');
-  btn.disabled = true;
-  btn.textContent = '📡 Locating...';
+  const btn=document.getElementById('startJobBtn');
+  btn.disabled=true; btn.textContent='📡 Locating...';
   try{
-    const gps  = await getGPS();
-    const city = await getCity(gps);
-    const date = new Date().toISOString().slice(0,10);
-    const id   = await db.jobs.add({name, date, city, gps, status:'active', createdAt:Date.now()});
-    activeJob  = await db.jobs.get(id);
-    document.getElementById('headerJobLabel').textContent = name;
-    document.getElementById('jobNameInput').value = '';
+    const gps=await getGPS();
+    const city=await getCity(gps);
+    const date=new Date().toISOString().slice(0,10);
+    const id=await db.jobs.add({name,date,city,gps,status:'active',createdAt:Date.now()});
+    activeJob=await db.jobs.get(id);
+    document.getElementById('headerJobLabel').textContent=name;
+    document.getElementById('jobNameInput').value='';
     showScreen('capture');
-  }catch(e){
-    showToast('Error: '+e.message,'error');
-  }finally{
-    btn.disabled = false;
-    btn.textContent = '🚀 Start Capture';
-  }
+  }catch(e){showToast('Error: '+e.message,'error');}
+  finally{btn.disabled=false;btn.textContent='🚀 Start Capture';}
 }
 
 async function resumeActiveJob(){
-  const jobs = await db.jobs.where('status').equals('active').toArray();
+  const jobs=await db.jobs.where('status').equals('active').toArray();
   if(!jobs.length) return showToast('No active job found','error');
-  activeJob = jobs[0];
-  document.getElementById('headerJobLabel').textContent = activeJob.name;
+  activeJob=jobs[0];
+  document.getElementById('headerJobLabel').textContent=activeJob.name;
   showScreen('capture');
 }
 
-// ── Capture ───────────────────────────────────────────────────────────────────
+// ── Capture render ────────────────────────────────────────────────────────────
 async function renderCapture(){
   if(!activeJob) return;
-  // Info box
-  document.getElementById('captureInfo').innerHTML =
+  document.getElementById('captureInfo').innerHTML=
     `<span>📅 ${activeJob.date}</span><span>📍 ${activeJob.city}</span><span>🛰 ${activeJob.gps}</span>`;
   await renderMediaList();
 }
 
 async function renderMediaList(){
-  const items = await db.media.where('jobId').equals(activeJob.id).toArray();
-  // Pills
-  const before = items.filter(m=>m.shotType==='Before').length;
-  const after  = items.filter(m=>m.shotType==='After').length;
-  document.getElementById('progressPills').innerHTML = `
+  if(!activeJob) return;
+  const items=await db.media.where('jobId').equals(activeJob.id).toArray();
+  const before=items.filter(m=>m.shotType==='Before').length;
+  const after =items.filter(m=>m.shotType==='After').length;
+  document.getElementById('progressPills').innerHTML=`
     <span class="pill ${before>0?'pill-yellow':'pill-gray'}">✓ Before: ${before}</span>
     <span class="pill ${after>0?'pill-yellow':'pill-gray'}">✓ After: ${after}</span>
-    <span class="pill pill-gray">${items.length} item${items.length!==1?'s':''}</span>
-  `;
-  // List
-  const list = document.getElementById('mediaList');
-  if(!items.length){ list.innerHTML='<p style="color:#333;font-size:12px">No media yet.</p>'; return; }
-  list.innerHTML = items.map(item=>{
-    const icon = item.type==='photo'?'📷':item.type==='video'?'🎬':'🎙️';
-    const url  = item.blob ? URL.createObjectURL(item.blob) : null;
-    const thumb = item.type==='photo' && url
-      ? `<img src="${url}" alt=""/>`
-      : `<span>${icon}</span>`;
-    const tags = [
-      item.shotType    ? `<span class="tag tag-white">${item.shotType}</span>`:'',
-      item.serviceType ? `<span class="tag tag-yellow">${item.serviceType}</span>`:'',
-      item.contentValue? `<span class="tag tag-white">${item.contentValue}</span>`:'',
-      item.highlight   ? `<span style="color:#FFD000;font-size:14px">⭐</span>`:'',
+    <span class="pill pill-gray">${items.length} item${items.length!==1?'s':''}</span>`;
+
+  const list=document.getElementById('mediaList');
+  if(!items.length){list.innerHTML='<p style="color:#333;font-size:12px">No media yet.</p>';return;}
+
+  // Build cards
+  const cards = await Promise.all(items.map(async item=>{
+    // Get or create object URL
+    if(!objectURLs[item.id] && item.blob){
+      objectURLs[item.id]=URL.createObjectURL(item.blob);
+    }
+    const url=objectURLs[item.id]||'';
+    const icon=item.type==='photo'?'📷':item.type==='video'?'🎬':'🎙️';
+
+    let thumbHTML;
+    if(item.type==='photo' && url){
+      thumbHTML=`<img src="${url}" alt="photo"/>`;
+    } else if(item.type==='video' && url){
+      thumbHTML=`<video src="${url}" muted playsinline style="width:100%;height:100%;object-fit:cover"></video>`;
+    } else {
+      thumbHTML=`<span>${icon}</span>`;
+    }
+
+    const tags=[
+      item.shotType    ?`<span class="tag tag-white">${item.shotType}</span>`:'',
+      item.serviceType ?`<span class="tag tag-yellow">${item.serviceType}</span>`:'',
+      item.contentValue?`<span class="tag tag-white">${item.contentValue}</span>`:'',
+      item.highlight   ?`<span style="color:#FFD000;font-size:13px">⭐</span>`:'',
     ].join('');
-    const warn = (!item.shotType||!item.serviceType) ? '<p class="warn">⚠ Tags incomplete</p>' : '';
-    return `<div class="media-card" style="margin-bottom:10px">
-      <div class="thumb">${thumb}</div>
+
+    const warn=(!item.shotType||!item.serviceType)?'<p class="warn">⚠ Tags incomplete — tap ✏️</p>':'';
+    const voice=item.voiceNote?`<p style="color:#555;font-size:11px;margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${item.voiceNote}</p>`:'';
+
+    return `<div class="media-card">
+      <div class="thumb">${thumbHTML}</div>
       <div style="flex:1;min-width:0">
-        <div class="tags">${tags}</div>
-        ${item.voiceNote?`<p style="color:#555;font-size:11px;margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${item.voiceNote}</p>`:''}
-        ${warn}
+        <div style="font-size:11px;color:#444;margin-bottom:4px;text-transform:uppercase;letter-spacing:1px">${item.type}</div>
+        <div class="tags">${tags||'<span style="color:#444;font-size:10px">No tags yet</span>'}</div>
+        ${voice}${warn}
       </div>
       <div class="card-actions">
-        <button class="btn btn-gray btn-sm" onclick="editMedia(${item.id})">✏️</button>
-        <button class="btn btn-sm" style="background:#1a1a1a;color:#f87171;border:2px solid #333;padding:8px 12px;font-size:11px;border-radius:8px;cursor:pointer;font-family:'Courier New',monospace;font-weight:900;width:auto" onclick="delMedia(${item.id})">🗑</button>
+        <button class="btn-sm" onclick="editMedia(${item.id})">✏️</button>
+        <button class="btn-sm" style="color:#f87171" onclick="delMedia(${item.id})">🗑</button>
       </div>
     </div>`;
-  }).join('');
+  }));
+  list.innerHTML=cards.join('');
 }
 
-async function handlePhotoFile(e){
-  const file = e.target.files?.[0];
+// ── File input handlers ───────────────────────────────────────────────────────
+async function handleFileInput(e, type){
+  const file=e.target.files?.[0];
   if(!file) return;
-  const blob = new Blob([await file.arrayBuffer()], {type:file.type});
-  const id = await db.media.add({jobId:activeJob.id, type:'photo', blob, shotType:'', serviceType:'', contentValue:'', highlight:false, voiceNote:'', capturedAt:Date.now()});
-  openTagModal(id, 'photo');
-  await renderMediaList();
+  await saveMediaBlob(file, type);
   e.target.value='';
 }
 
-// ── Video / Voice recording ───────────────────────────────────────────────────
-async function toggleVideo(){
-  if(mediaRec && recordingType==='video'){ mediaRec.stop(); return; }
-  try{
-    const stream = await navigator.mediaDevices.getUserMedia({video:true,audio:true});
-    mediaChunks = [];
-    mediaRec = new MediaRecorder(stream);
-    recordingType = 'video';
-    mediaRec.ondataavailable = e=>mediaChunks.push(e.data);
-    mediaRec.onstop = async ()=>{
-      stream.getTracks().forEach(t=>t.stop());
-      const blob = new Blob(mediaChunks,{type:'video/webm'});
-      const id = await db.media.add({jobId:activeJob.id,type:'video',blob,shotType:'',serviceType:'',contentValue:'',highlight:false,voiceNote:'',capturedAt:Date.now()});
-      openTagModal(id,'video');
-      await renderMediaList();
-      document.getElementById('videoBtn').textContent='🎬 Record Video';
-      document.getElementById('videoBtn').classList.remove('btn-red');
-      document.getElementById('videoBtn').classList.add('btn-gray');
-      mediaRec=null; recordingType=null;
-    };
-    mediaRec.start();
-    document.getElementById('videoBtn').textContent='⏹ Stop Recording';
-    document.getElementById('videoBtn').classList.remove('btn-gray');
-    document.getElementById('videoBtn').classList.add('btn-red','recording');
-  }catch{ showToast('Camera permission denied','error'); }
+async function handleRollInput(e){
+  const files=e.target.files;
+  if(!files||!files.length) return;
+  for(const file of files){
+    const type=file.type.startsWith('video')?'video':'photo';
+    await saveMediaBlob(file,type);
+  }
+  e.target.value='';
 }
 
-async function toggleVoice(){
-  if(mediaRec && recordingType==='voice'){ mediaRec.stop(); return; }
+async function saveMediaBlob(file, type){
+  const blob=new Blob([await file.arrayBuffer()],{type:file.type});
+  const id=await db.media.add({
+    jobId:activeJob.id, type, blob,
+    shotType:'', serviceType:'', contentValue:'',
+    highlight:false, voiceNote:'', capturedAt:Date.now()
+  });
+  await renderMediaList();
+  openTagModal(id, type);
+  showToast(`${type==='photo'?'Photo':'Video'} added — tag it!`,'info');
+}
+
+// ── Video recording ───────────────────────────────────────────────────────────
+async function toggleVideo(){
+  const btn=document.getElementById('videoBtn');
+  if(mediaRec && recordingType==='video'){
+    mediaRec.stop();
+    return;
+  }
   try{
-    const stream = await navigator.mediaDevices.getUserMedia({audio:true});
-    mediaChunks = [];
-    mediaRec = new MediaRecorder(stream);
-    recordingType = 'voice';
-    mediaRec.ondataavailable = e=>mediaChunks.push(e.data);
-    mediaRec.onstop = async ()=>{
+    const stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'},audio:true});
+    mediaChunks=[];
+    const mimeType=MediaRecorder.isTypeSupported('video/mp4')?'video/mp4':'video/webm';
+    mediaRec=new MediaRecorder(stream,{mimeType});
+    recordingType='video';
+    mediaRec.ondataavailable=e=>{if(e.data.size>0)mediaChunks.push(e.data);};
+    mediaRec.onstop=async()=>{
       stream.getTracks().forEach(t=>t.stop());
-      const blob = new Blob(mediaChunks,{type:'audio/webm'});
-      const id = await db.media.add({jobId:activeJob.id,type:'voice',blob,shotType:'',serviceType:'',contentValue:'',highlight:false,voiceNote:'',capturedAt:Date.now()});
-      openTagModal(id,'voice');
-      await renderMediaList();
-      document.getElementById('voiceBtn').textContent='🎙️ Add Voice Note';
-      document.getElementById('voiceBtn').classList.remove('btn-red');
-      document.getElementById('voiceBtn').classList.add('btn-gray');
+      const blob=new Blob(mediaChunks,{type:mimeType});
+      const id=await db.media.add({jobId:activeJob.id,type:'video',blob,shotType:'',serviceType:'',contentValue:'',highlight:false,voiceNote:'',capturedAt:Date.now()});
       mediaRec=null; recordingType=null;
+      btn.innerHTML='🎬 Record Video';
+      btn.className='btn btn-gray';
+      await renderMediaList();
+      openTagModal(id,'video');
+      showToast('Video saved — tag it!','info');
     };
-    mediaRec.start();
-    document.getElementById('voiceBtn').textContent='⏹ Stop Voice';
-    document.getElementById('voiceBtn').classList.remove('btn-gray');
-    document.getElementById('voiceBtn').classList.add('btn-red','recording');
-  }catch{ showToast('Microphone permission denied','error'); }
+    mediaRec.start(100); // collect data every 100ms — fixes "stuck" issue
+    btn.innerHTML='<span class="rec-indicator"></span>STOP RECORDING';
+    btn.className='btn btn-red';
+  }catch(err){
+    showToast('Camera error: '+err.message,'error');
+  }
+}
+
+// ── Voice recording ───────────────────────────────────────────────────────────
+async function toggleVoice(){
+  const btn=document.getElementById('voiceBtn');
+  if(mediaRec && recordingType==='voice'){
+    mediaRec.stop();
+    return;
+  }
+  try{
+    const stream=await navigator.mediaDevices.getUserMedia({audio:true});
+    mediaChunks=[];
+    const mimeType=MediaRecorder.isTypeSupported('audio/mp4')?'audio/mp4':'audio/webm';
+    mediaRec=new MediaRecorder(stream,{mimeType});
+    recordingType='voice';
+    mediaRec.ondataavailable=e=>{if(e.data.size>0)mediaChunks.push(e.data);};
+    mediaRec.onstop=async()=>{
+      stream.getTracks().forEach(t=>t.stop());
+      const blob=new Blob(mediaChunks,{type:mimeType});
+      const id=await db.media.add({jobId:activeJob.id,type:'voice',blob,shotType:'',serviceType:'',contentValue:'',highlight:false,voiceNote:'',capturedAt:Date.now()});
+      mediaRec=null; recordingType=null;
+      btn.innerHTML='🎙️ Record Voice Note';
+      btn.className='btn btn-gray';
+      await renderMediaList();
+      openTagModal(id,'voice');
+      showToast('Voice note saved — tag it!','info');
+    };
+    mediaRec.start(100);
+    btn.innerHTML='<span class="rec-indicator"></span>STOP VOICE';
+    btn.className='btn btn-red';
+  }catch(err){
+    showToast('Mic error: '+err.message,'error');
+  }
 }
 
 // ── Tag Modal ─────────────────────────────────────────────────────────────────
-function buildTagOptions(containerId, options, key){
-  const c = document.getElementById(containerId);
-  c.innerHTML = options.map(opt=>`
-    <div class="tag-opt ${tagState[key]===opt?'selected':''}" onclick="selectTag('${key}','${opt}','${containerId}',this)">${opt}</div>
-  `).join('');
+function buildTagOptions(containerId,options,key){
+  document.getElementById(containerId).innerHTML=options.map(opt=>
+    `<div class="tag-opt ${tagState[key]===opt?'selected':''}" onclick="selectTag('${key}','${opt}','${containerId}',this)">${opt}</div>`
+  ).join('');
 }
 
-function selectTag(key, val, containerId, el){
-  tagState[key] = val;
+function selectTag(key,val,containerId,el){
+  tagState[key]=val;
   document.querySelectorAll(`#${containerId} .tag-opt`).forEach(e=>e.classList.remove('selected'));
   el.classList.add('selected');
-  // Smart default
   if(key==='shot'||key==='service'){
-    const auto = (tagState.shot==='Finished Lines'||tagState.service==='Line Painting') ? 'Content Worthy' : tagState.content||'Minimal';
-    tagState.content = auto;
-    buildTagOptions('tagContent', CONTENT_VALUES, 'content');
+    const auto=(tagState.shot==='Finished Lines'||tagState.service==='Line Painting')?'Content Worthy':'Minimal';
+    tagState.content=auto;
+    buildTagOptions('tagContent',CONTENT_VALUES,'content');
   }
 }
 
 function toggleHL(){
-  tagState.highlight = !tagState.highlight;
-  const box = document.getElementById('hlBox');
-  box.textContent = tagState.highlight ? '⭐' : '☆';
-  box.classList.toggle('on', tagState.highlight);
+  tagState.highlight=!tagState.highlight;
+  const box=document.getElementById('hlBox');
+  box.textContent=tagState.highlight?'⭐':'☆';
+  box.classList.toggle('on',tagState.highlight);
 }
 
-function openTagModal(id, type){
-  taggingId = id;
-  tagState = {shot:'', service:'', content:'Minimal', highlight:false, voiceNote:''};
-  buildTagOptions('tagShot', SHOT_TYPES, 'shot');
-  buildTagOptions('tagService', SERVICE_TYPES, 'service');
-  buildTagOptions('tagContent', CONTENT_VALUES, 'content');
-  document.getElementById('hlBox').textContent='☆';
-  document.getElementById('hlBox').classList.remove('on');
-  document.getElementById('voiceNoteRow').style.display = type==='voice'?'block':'none';
+function openTagModal(id,type){
+  taggingId=id;
+  tagState={shot:'',service:'',content:'Minimal',highlight:false,voiceNote:''};
+  buildTagOptions('tagShot',SHOT_TYPES,'shot');
+  buildTagOptions('tagService',SERVICE_TYPES,'service');
+  buildTagOptions('tagContent',CONTENT_VALUES,'content');
+  const box=document.getElementById('hlBox');
+  box.textContent='☆'; box.classList.remove('on');
+  document.getElementById('voiceNoteRow').style.display=type==='voice'?'block':'none';
   document.getElementById('voiceNoteText').value='';
   document.getElementById('tagModal').classList.add('open');
 }
 
-function closeTagModal(){ document.getElementById('tagModal').classList.remove('open'); taggingId=null; }
+function closeTagModal(){document.getElementById('tagModal').classList.remove('open');taggingId=null;}
 
 async function saveTags(){
-  if(!tagState.shot||!tagState.service||!tagState.content) return showToast('Select all three tag layers','error');
-  tagState.voiceNote = document.getElementById('voiceNoteText').value;
-  await db.media.update(taggingId,{shotType:tagState.shot,serviceType:tagState.service,contentValue:tagState.content,highlight:tagState.highlight,voiceNote:tagState.voiceNote});
+  if(!tagState.shot||!tagState.service||!tagState.content)
+    return showToast('Select all three tag layers','error');
+  tagState.voiceNote=document.getElementById('voiceNoteText').value;
+  await db.media.update(taggingId,{
+    shotType:tagState.shot, serviceType:tagState.service,
+    contentValue:tagState.content, highlight:tagState.highlight,
+    voiceNote:tagState.voiceNote
+  });
   closeTagModal();
   await renderMediaList();
 }
 
 async function editMedia(id){
-  const item = await db.media.get(id);
-  taggingId = id;
-  tagState = {shot:item.shotType||'',service:item.serviceType||'',content:item.contentValue||'Minimal',highlight:!!item.highlight,voiceNote:item.voiceNote||''};
-  buildTagOptions('tagShot', SHOT_TYPES, 'shot');
-  buildTagOptions('tagService', SERVICE_TYPES, 'service');
-  buildTagOptions('tagContent', CONTENT_VALUES, 'content');
-  const box = document.getElementById('hlBox');
-  box.textContent = tagState.highlight?'⭐':'☆';
-  box.classList.toggle('on', tagState.highlight);
-  document.getElementById('voiceNoteRow').style.display = item.type==='voice'?'block':'none';
-  document.getElementById('voiceNoteText').value = tagState.voiceNote;
+  const item=await db.media.get(id);
+  taggingId=id;
+  tagState={shot:item.shotType||'',service:item.serviceType||'',content:item.contentValue||'Minimal',highlight:!!item.highlight,voiceNote:item.voiceNote||''};
+  buildTagOptions('tagShot',SHOT_TYPES,'shot');
+  buildTagOptions('tagService',SERVICE_TYPES,'service');
+  buildTagOptions('tagContent',CONTENT_VALUES,'content');
+  const box=document.getElementById('hlBox');
+  box.textContent=tagState.highlight?'⭐':'☆';
+  box.classList.toggle('on',tagState.highlight);
+  document.getElementById('voiceNoteRow').style.display=item.type==='voice'?'block':'none';
+  document.getElementById('voiceNoteText').value=tagState.voiceNote;
   document.getElementById('tagModal').classList.add('open');
 }
 
 async function delMedia(id){
+  if(objectURLs[id]){URL.revokeObjectURL(objectURLs[id]);delete objectURLs[id];}
   await db.media.delete(id);
   await renderMediaList();
 }
@@ -490,31 +529,30 @@ async function delMedia(id){
 // ── Pause ─────────────────────────────────────────────────────────────────────
 async function pauseJob(){
   await db.jobs.update(activeJob.id,{status:'paused'});
-  showToast('Job paused. Data saved locally.','info');
+  showToast('Job paused. Data saved offline.','info');
   goHome();
 }
 
 // ── Paused Jobs ───────────────────────────────────────────────────────────────
 async function loadPausedJobs(){
-  const jobs = await db.jobs.where('status').equals('paused').toArray();
-  const el = document.getElementById('pausedList');
-  if(!jobs.length){ el.innerHTML='<p style="color:#333;font-size:12px">No paused jobs.</p>'; return; }
-  el.innerHTML = jobs.map(j=>`
-    <div class="job-card" style="margin-bottom:12px">
-      <div class="job-card-title">${j.name}</div>
-      <div class="job-card-meta">${j.date} · ${j.city}</div>
+  const jobs=await db.jobs.where('status').equals('paused').toArray();
+  const el=document.getElementById('pausedList');
+  if(!jobs.length){el.innerHTML='<p style="color:#333;font-size:12px">No paused jobs.</p>';return;}
+  el.innerHTML=jobs.map(j=>`
+    <div class="job-card">
+      <div style="font-weight:900;font-size:16px">${j.name}</div>
+      <div style="color:#555;font-size:11px">${j.date} · ${j.city}</div>
       <div class="flex-row">
         <button class="btn btn-yellow flex-1" style="padding:14px" onclick="resumePaused(${j.id})">▶ Resume</button>
-        <button class="btn btn-sm" style="background:#1a1a1a;color:#f87171;border:2px solid #333;padding:14px 18px;font-size:14px;border-radius:12px;cursor:pointer;font-family:'Courier New',monospace;font-weight:900;width:auto" onclick="deletePaused(${j.id})">🗑</button>
+        <button class="btn-sm" style="color:#f87171;padding:14px 18px;font-size:14px;border-radius:12px" onclick="deletePaused(${j.id})">🗑</button>
       </div>
-    </div>
-  `).join('');
+    </div>`).join('');
 }
 
 async function resumePaused(id){
   await db.jobs.update(id,{status:'active'});
-  activeJob = await db.jobs.get(id);
-  document.getElementById('headerJobLabel').textContent = activeJob.name;
+  activeJob=await db.jobs.get(id);
+  document.getElementById('headerJobLabel').textContent=activeJob.name;
   showScreen('capture');
 }
 
@@ -528,11 +566,11 @@ async function deletePaused(id){
 
 // ── Upload ────────────────────────────────────────────────────────────────────
 async function goToUpload(){
-  const items = await db.media.where('jobId').equals(activeJob.id).toArray();
-  const hasBefore = items.some(m=>m.shotType==='Before');
-  const hasAfter  = items.some(m=>m.shotType==='After');
+  const items=await db.media.where('jobId').equals(activeJob.id).toArray();
+  const hasBefore=items.some(m=>m.shotType==='Before');
+  const hasAfter =items.some(m=>m.shotType==='After');
   if(!hasBefore||!hasAfter){
-    const missing = [!hasBefore&&'Before',!hasAfter&&'After'].filter(Boolean).join(' & ');
+    const missing=[!hasBefore&&'Before',!hasAfter&&'After'].filter(Boolean).join(' & ');
     return showToast(`Need at least 1 ${missing} photo to upload`,'error');
   }
   showScreen('upload');
@@ -540,92 +578,85 @@ async function goToUpload(){
 
 function renderUploadScreen(){
   if(!activeJob) return;
-  document.getElementById('uploadInfo').innerHTML =
+  document.getElementById('uploadInfo').innerHTML=
     `<span style="font-weight:900;color:#fff">${activeJob.name}</span><span>${activeJob.date} · ${activeJob.city}</span>`;
   document.getElementById('uploadProgress').style.display='none';
   document.getElementById('uploadLog').style.display='none';
-  document.getElementById('uploadBtn').style.display='flex';
-  document.getElementById('uploadBtn').disabled=false;
-  document.getElementById('uploadBtn').textContent='☁️ Upload All';
+  const btn=document.getElementById('uploadBtn');
+  btn.style.display='flex'; btn.disabled=false; btn.textContent='☁️ Upload All';
   document.getElementById('uploadBackBtn').textContent='← Back';
 }
 
-function addLog(msg, type='ok'){
-  const box = document.getElementById('uploadLog');
+function addLog(msg,type='ok'){
+  const box=document.getElementById('uploadLog');
   box.style.display='flex';
-  const line = document.createElement('p');
-  line.className = `log-line log-${type}`;
-  line.textContent = msg;
-  box.appendChild(line);
-  box.scrollTop = box.scrollHeight;
+  const p=document.createElement('p');
+  p.className=`log-line log-${type}`; p.textContent=msg;
+  box.appendChild(p); box.scrollTop=box.scrollHeight;
 }
 
-function setProgress(done, total){
-  const pct = total ? Math.round(done/total*100) : 0;
-  document.getElementById('uploadCount').textContent = `${done} / ${total}`;
-  document.getElementById('uploadPct').textContent   = `${pct}%`;
-  document.getElementById('progressFill').style.width = `${pct}%`;
+function setProgress(done,total){
+  const pct=total?Math.round(done/total*100):0;
+  document.getElementById('uploadCount').textContent=`${done} / ${total}`;
+  document.getElementById('uploadPct').textContent=`${pct}%`;
+  document.getElementById('progressFill').style.width=`${pct}%`;
 }
 
 function blobToBase64(blob){
   return new Promise((res,rej)=>{
-    const r = new FileReader();
-    r.onload  = ()=>res(r.result.split(',')[1]);
-    r.onerror = rej;
+    const r=new FileReader();
+    r.onload=()=>res(r.result.split(',')[1]);
+    r.onerror=rej;
     r.readAsDataURL(blob);
   });
 }
 
-async function apiCall(action, body){
-  const res = await fetch(`/api/notion-upload?action=${action}`,{
+async function apiCall(action,body){
+  const res=await fetch(`/api/notion-upload?action=${action}`,{
     method:'POST',
     headers:{'Content-Type':'application/json'},
     body:JSON.stringify(body),
   });
-  const data = await res.json();
+  const data=await res.json();
   if(!res.ok) throw new Error(data.error||`HTTP ${res.status}`);
   return data;
 }
 
 async function startUpload(){
-  const items = await db.media.where('jobId').equals(activeJob.id).toArray();
-  document.getElementById('uploadBtn').disabled = true;
-  document.getElementById('uploadBtn').textContent = '⏳ Uploading…';
-  document.getElementById('uploadProgress').style.display = 'block';
-  setProgress(0, items.length);
+  const items=await db.media.where('jobId').equals(activeJob.id).toArray();
+  const btn=document.getElementById('uploadBtn');
+  btn.disabled=true; btn.textContent='⏳ Uploading…';
+  document.getElementById('uploadProgress').style.display='block';
+  setProgress(0,items.length);
 
-  for(let i=0; i<items.length; i++){
-    const item = items[i];
-    const ext  = item.type==='photo'?'jpg':'webm';
-    const mime = item.type==='photo'?'image/jpeg':'audio/webm';
-    const fileName = `${activeJob.name}_${item.type}_${i+1}.${ext}`;
+  for(let i=0;i<items.length;i++){
+    const item=items[i];
+    const isVideo=item.type==='video';
+    const isVoice=item.type==='voice';
+    const ext=item.type==='photo'?'jpg':isVideo?'mp4':'m4a';
+    const mime=item.type==='photo'?'image/jpeg':isVideo?'video/mp4':'audio/mp4';
+    const fileName=`${activeJob.name}_${item.type}_${i+1}.${ext}`;
     try{
       addLog(`[${i+1}/${items.length}] Creating Notion page…`);
-      const {pageId} = await apiCall('create_page',{
-        jobName:      activeJob.name,
-        city:         activeJob.city,
-        date:         activeJob.date,
-        gps:          activeJob.gps,
-        shotType:     item.shotType,
-        serviceType:  item.serviceType,
-        contentValue: item.contentValue,
-        highlight:    item.highlight,
-        voiceNote:    item.voiceNote,
+      const {pageId}=await apiCall('create_page',{
+        jobName:activeJob.name, city:activeJob.city, date:activeJob.date, gps:activeJob.gps,
+        shotType:item.shotType, serviceType:item.serviceType, contentValue:item.contentValue,
+        highlight:item.highlight, voiceNote:item.voiceNote,
       });
       addLog(`[${i+1}/${items.length}] Uploading file…`);
-      const fileBase64 = await blobToBase64(item.blob);
-      const {fileUploadId} = await apiCall('upload_file',{fileName, mimeType:mime, fileBase64});
-      addLog(`[${i+1}/${items.length}] Attaching to page…`);
-      await apiCall('attach_file',{pageId, fileUploadId, fileName});
-      addLog(`✓ Item ${i+1} done`,'done');
+      const fileBase64=await blobToBase64(item.blob);
+      const {fileUploadId}=await apiCall('upload_file',{fileName,mimeType:mime,fileBase64});
+      addLog(`[${i+1}/${items.length}] Attaching…`);
+      await apiCall('attach_file',{pageId,fileUploadId,fileName});
+      addLog(`✓ Item ${i+1} uploaded`,'done');
     }catch(e){
       addLog(`✗ Item ${i+1} failed: ${e.message}`,'err');
     }
-    setProgress(i+1, items.length);
+    setProgress(i+1,items.length);
   }
 
   await db.jobs.update(activeJob.id,{status:'uploaded'});
-  document.getElementById('uploadBtn').style.display='none';
+  btn.style.display='none';
   document.getElementById('uploadBackBtn').textContent='✅ Done — Back to Home';
   showToast('Upload complete! 🎉','success');
 }
